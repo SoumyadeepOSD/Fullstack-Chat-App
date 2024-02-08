@@ -63,7 +63,7 @@ export const loginUser = async(req, res) => {
         // *Find the user using username
         const user = await User.findOne({userName});
         // *Check for the user's password existance
-        const isPasswordCorrect = password === user.password;
+        const isPasswordCorrect = await bcryptjs.compare(password, user.password);
 
         // *If user and password any one does not exist, then show "Invalid credentials"
         if(!user || !isPasswordCorrect){
@@ -84,6 +84,7 @@ export const loginUser = async(req, res) => {
 
     } catch (error) {
        console.log("Error in login controller", error.message);
+       console.log(req.body.userName, req.body.password);
        res.status(500).json({error:"Internal Server error"});
     }
 }

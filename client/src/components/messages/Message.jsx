@@ -1,16 +1,29 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
+import {useAuthContext} from '../../context/AuthContext';
+import useConversation from '../../zustand/useConversation';
+import { extractTime } from '../../utils/extractTime';
 
-const Message = () => {
+const Message = ({message}) => {
+    const {authUser} = useAuthContext();
+    const {selectedConversation} = useConversation();
+    const fromMe = message.senderId === authUser._id;
+    const formattedTime = extractTime(message.createdAt);
+    const chatClassName = fromMe ? 'chat-end' : 'chat-start';
+    const profilePic = fromMe ? authUser.profilePic : selectedConversation?.profilePic
+    const bubbleBgColor = fromMe ? 'bg-blue-500' : '';
+
+
+
     return (
-        <div className='chat chat-end'>
+        <div className={`chat ${chatClassName}`}>
             <div className='chat-image avatar'>
                 <div className='w-10 rounded-full'>
-                    <img src={"https://static.vecteezy.com/system/resources/previews/006/487/917/original/man-avatar-icon-free-vector.jpg"} alt="user avatar" />
+                    <img src={profilePic} alt="user avatar" />
                 </div>
             </div>
-            <div className='chat-bubble text-white bg-blue-500'>Hi! Jay shree ram bro!</div>
-            <div className='chat-footer opacity-50 text-xs flex gap-1 items-center'>12:40</div>
+            <div className={`chat-bubble text-white bg-blue-500 ${bubbleBgColor} pb-2`}>{message.message}</div>
+            <div className='chat-footer opacity-50 text-xs flex gap-1 items-center'>{formattedTime}</div>
         </div>
     )
 }

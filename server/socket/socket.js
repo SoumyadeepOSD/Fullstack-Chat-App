@@ -7,7 +7,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "https://react-chat-app-wc7m.onrender.com",
+        origin: "http://localhost:5000",
         methods: ["GET", "POST"]
     }
 });

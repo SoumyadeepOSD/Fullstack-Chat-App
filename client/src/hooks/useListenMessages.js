@@ -16,7 +16,7 @@ const useListenMessages = () => {
         })
         // *Not listening the event more than 1 time
         return () => socket?.off("newMessage");
-    },[socket, setMessages, messages]);
+    },[setMessages, messages, socket]);
 }
 
 export default useListenMessages
